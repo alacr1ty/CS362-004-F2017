@@ -4,6 +4,7 @@
 #include <stdlib.h>
 
 int main (int argc, char** argv) {
+
   struct gameState G;
   int k[10] = {adventurer, gardens, embargo, village, minion, mine, cutpurse,
            sea_hag, tribute, smithy};
@@ -131,4 +132,5 @@ int main (int argc, char** argv) {
   printf ("Player 0: %d\nPlayer 1: %d\n", scoreFor(0, &G), scoreFor(1, &G));
 
   return 0;
+  
 }
