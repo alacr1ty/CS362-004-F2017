@@ -4,11 +4,11 @@
 // in as cardtest1.c, cardtest2.c, cardtest3.c, and cardtest4.c. It is mandatory to test
 // smithy and adventurer card. (20 points)
 
-// Testing smithy: cardEffectSmithy(struct gameState *state, int currentPlayer, int handPos, int i)
+// Testing village: cardEffectVillage(struct gameState *state, int currentPlayer, int handPos, int i)
 // 	The player draws 3 cards and is itself discarded
 
-// cardtest1: cardtest1.c dominion.o rngs.o
-// 	gcc -o cardtest1 -g  cardtest1.c dominion.o rngs.o $(CFLAGS)
+// cardtest3: cardtest3.c dominion.o rngs.o
+// 	gcc -o cardtest3 -g  cardtest3.c dominion.o rngs.o $(CFLAGS)
 
 #include "dominion.h"
 #include "dominion_helpers.h"
