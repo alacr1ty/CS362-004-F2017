@@ -15,7 +15,7 @@
 #define TESTING adventurer
 #define KINGDOM_SIZE 10
 #define VERBOSE 1
-#define ASSERTION 0
+#define ASSERTION 1
 
 
 int main () {
@@ -25,7 +25,6 @@ int main () {
 	// Initialize game state and associated variables
 	struct gameState opState, testState;
 	int seed;
-	
 	int playerNum = 2; //number of players
 	int coins; /* Use as you see fit! */
 	int whoseTurn;
@@ -33,7 +32,6 @@ int main () {
 	int deckCount;
 	int discardCount;
 	int playedCardCount;
-	int numActions;
 	int numAdventurers[playerNum];
 	memset(numAdventurers, 0, playerNum*sizeof(int));
 	int kingdom[KINGDOM_SIZE] = {adventurer, gardens, embargo, village, minion, mine, cutpurse,
@@ -74,17 +72,14 @@ int main () {
 			memcpy(&testState, &opState, sizeof(struct gameState));
 
 			whoseTurn = testState.whoseTurn;
-			// handCount[whoseTurn] = testState.handCount[whoseTurn];
-			// deckCount[whoseTurn] = testState.deckCount[whoseTurn];
-			// playedCardCount = testState.playedCardCount;
 
 			printf("Hand start conditions - player %d\n", whoseTurn+1);
 			printf("\t\t\topState\ttestState\n");
 			printf("handCount:\t\t%d\t%d\n", opState.handCount[whoseTurn], testState.handCount[whoseTurn]);
-			printf("deckCount:\t\t%d\t%d\n", opState.deckCount[whoseTurn], testState.deckCount[whoseTurn]);
-			printf("discardCount:\t\t%d\t%d\n", opState.discardCount[whoseTurn], testState.discardCount[whoseTurn]);
+			// printf("deckCount:\t\t%d\t%d\n", opState.deckCount[whoseTurn], testState.deckCount[whoseTurn]);
+			// printf("discardCount:\t\t%d\t%d\n", opState.discardCount[whoseTurn], testState.discardCount[whoseTurn]);
 			printf("playedCardCount:\t%d\t%d\n", opState.playedCardCount, testState.playedCardCount);
-			printf("numActions:\t\t%d\t%d\n", opState.numActions, testState.numActions);
+			// printf("numActions:\t\t%d\t%d\n", opState.numActions, testState.numActions);
 
 			// Call the function to test
 			// if adventurer is in the hand
@@ -96,23 +91,15 @@ int main () {
 				// 	Reveal cards from your deck until you reveal 2 Treasure cards. Put those Treasure cards into your hand
 					// and discard the other revealed cards.
 
-				// while (drawntreasure<2) {
-				// 	if (opState.deckCount[whoseTurn]) {
-				// 		/* code */
-				// 	}
-				// }
-
 				// the net gamestate delta should be...
-				// handCount = previous handcount
-				handCount = opState.handCount[whoseTurn];
-				// deckCount --
-				deckCount = (opState.deckCount[whoseTurn] - 1);
-				// discardCount ++
-				discardCount = (opState.discardCount[whoseTurn] + 1);
+				// handCount += 2
+				handCount = opState.handCount[whoseTurn] + 2;
+				// deckCount = previous deckcount - (discardCount + 2)
+				deckCount = (opState.deckCount[whoseTurn] - (testState.discardCount[whoseTurn] + 2));
+				// discardCount = previous discardCount + (previous deckCount - deckCount)
+				discardCount = (opState.discardCount[whoseTurn] + (opState.deckCount[whoseTurn] - testState.deckCount[whoseTurn]));
 				// playedCardCount++
 				playedCardCount = (opState.playedCardCount + 1);
-				// numActions += 2
-				numActions = (opState.numActions + 2);
 
 				printf("adventurer played from position %d\n", adventurerPos);
 
@@ -123,7 +110,6 @@ int main () {
 					printf("deckCount:\t\t%d\t%d\n", deckCount, testState.deckCount[whoseTurn]);
 					printf("discardCount:\t\t%d\t%d\n", discardCount, testState.discardCount[whoseTurn]);
 					printf("playedCardCount:\t%d\t%d\n", playedCardCount, testState.playedCardCount);
-					printf("numActions:\t\t%d\t%d\n", numActions, testState.numActions);
 				}
 				
 				// Assert that all variables are equal to the ideal state
@@ -132,7 +118,6 @@ int main () {
 					assert(deckCount==testState.deckCount[whoseTurn]);
 					assert(discardCount==testState.discardCount[whoseTurn]);
 					assert(playedCardCount==testState.playedCardCount);
-					assert(numActions==testState.numActions);
 				}
 			}
 

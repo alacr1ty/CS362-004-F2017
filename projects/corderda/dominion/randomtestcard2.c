@@ -14,7 +14,7 @@
 #define TESTING smithy
 #define KINGDOM_SIZE 10
 #define VERBOSE 1
-#define ASSERTION 0
+#define ASSERTION 1
 
 
 int main () {
@@ -71,9 +71,6 @@ int main () {
 			memcpy(&testState, &opState, sizeof(struct gameState));
 
 			whoseTurn = testState.whoseTurn;
-			// handCount[whoseTurn] = testState.handCount[whoseTurn];
-			// deckCount[whoseTurn] = testState.deckCount[whoseTurn];
-			// playedCardCount = testState.playedCardCount;
 
 			printf("Hand start conditions - player %d\n", whoseTurn+1);
 			printf("\t\t\topState\ttestState\n");
