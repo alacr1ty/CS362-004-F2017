@@ -1,13 +1,14 @@
 
 // 1- Write unit tests for four functions (not card implementations, and not cardEffect)
-// in dominion.c “the refactored code you created for assignment-2”. Check these tests in
-// as unittest1.c,unittest2.c, unittest3.c, and unittest4.c. At least two of these
-// functions should be more than 5 lines of code. (20 points)
+// 	in dominion.c “the refactored code you created for assignment-2”. Check these tests in
+// 	as unittest1.c,unittest2.c, unittest3.c, and unittest4.c. At least two of these
+// 	functions should be more than 5 lines of code. (20 points)
 
-// Testing buyCard()
+// Testing supplyCount(): int supplyCount(int card, struct gameState *state)
+// 	Returns the current supplyCount of a given card.
 
-// unittest1: unittest1.c dominion.o rngs.o
-// 	gcc -o unittest1 -g  unittest1.c dominion.o rngs.o $(CFLAGS)
+// unittest4: unittest4.c dominion.o rngs.o
+// 	gcc -o unittest4 -g  unittest4.c dominion.o rngs.o $(CFLAGS)
 
 #include "dominion.h"
 #include "dominion_helpers.h"
@@ -44,34 +45,34 @@ int main () {
 	// };
 
 	// Initialize game state and associated variables
-	struct gameState state;
+	struct gameState pre, post;
 	int playerNum = 2;
 	int kingdom[KINGDOM_SIZE] = {adventurer, gardens, embargo, village, minion, mine, cutpurse,
            sea_hag, tribute, smithy};
 	int seed = 1000;
-	int i, j;
+	int i, j, result, expect;
 
-	// For a number of possibilities
+// For a number of possibilities
 	for (i = 0; i < playerNum; ++i){
 		for (j = 0; j < KINGDOM_SIZE; ++j){
 
-			// Construct a new variation of the gameState to test            
 			// Clear the gamestate
-            memset(&post, 0, sizeof(struct gameState));
+			memset(&post, 0, sizeof(struct gameState));
 			// Initialize a new game
-            initializeGame(playerNum, kingdom, seed, &post);
+			initializeGame(playerNum, kingdom, seed, &post);
 
-            // Make a copy of the gameState
-            memcpy(&pre, &post, sizeof(struct gameState));
+			// Construct a new variation of the gameState to test            
+
+			// Make a copy of the gameState
+			memcpy(&pre, &post, sizeof(struct gameState));
 
 			// Call the function to test
-
-			// Perform the expected operations
-
-
-			if (VERBOSE==1)
-				printf("Coins: %d, expected: %d\n", state.coins, j * 1 + bonus);
+			result = supplyCount(kingdom[j], &post);
+			expect = pre.supplyCount[kingdom[j]];
 			
+			if (VERBOSE)
+				printf("supplyCount: %d, expected: %d\n", result, expect);
+				
 			// Assert that the function's return value matches the correct result
 			assert(result==expect);
 			// Assert that the gameState is identical to the ideal.

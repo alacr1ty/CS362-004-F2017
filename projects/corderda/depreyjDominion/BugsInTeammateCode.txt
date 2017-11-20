@@ -1,0 +1,37 @@
+Bug Report -- Assignment 5
+	Ava Cordero
+	CS362 Fall 2017
+
+Summary
+	I ran unit and random tests on both utility functions and card action functions for the dominion code base github repo for my groupmate Joe Deprey, c.a. Assignment 2 when multiple bugs were introduced as an excercise. During the testing and debugging process, I found a few noteworthy bugs by writing and executing a test suite in C and defined with coverage output in a unix make file.
+
+	The same tests I ran can be executed by calling
+		./runtests
+	which calls a simple combination combination of commands: make clean ; make runtests ; cat testresults.out ;.You can also call any combination of these commands that you like. You can view the test and coverage results by opening testresults.out. The total output contained in this log file is quite expansive, so I will only show select relative snippets of the file content.
+	The tests for the supplyCount() function all check out fine, and get 100% line and branch coverage. This is bearing in mind this is a limited, non-random unit test.
+	Moving onward, the second testing program, which tested the updateCoins() function, also went through a much bigger input data set, and passed all the tests.
+	When running the third set of unit tests, those for the numHandCards() function, we finally find something noteworthy. After about 500 executions, the testing program finds its first bug. The return value is incorrect:
+
+Testing with player 1...Result: 495, expected: 495
+Testing with player 1...Result: 496, expected: 496
+Testing with player 1...Result: 497, expected: 497
+Testing with player 1...Result: 498, expected: 498
+Testing with player 1...Result: 499, expected: 499
+Testing with player 2...Result: 5, expected: 0
+
+	If we drill down into the dominion.c source file, we can find that the function being tested is exceedingly simple:
+
+int numHandCards(struct gameState *state) {
+  return state->handCount[whoseTurn(state)];
+}
+
+	The bug specifically seems to return a value of 5 after new game initialization, instead of the expected zero value, as it does when running through the tests for player 1. Each iteration of the testing function calls the dominion function initializeGame(), so this considerably complex function seems to be doing something wrong. This may be indicated by the way that the main() function in playdom.c calls the function with a “2” hardcoded into the numPlayers parameter, and argv[1] instead being passed via the randomSeed parameter, though this is just speculation. Much more can be gleaned when we examine the larger initialGame() function in light of what the testing program has uncovered.
+
+
+
+	
+
+
+
+
+

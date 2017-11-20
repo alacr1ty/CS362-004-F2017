@@ -18,7 +18,7 @@
 #include <time.h>
 
 #define KINGDOM_SIZE 10
-
+#define VERBOSE 1
 
 int main () {
 
@@ -69,7 +69,10 @@ int main () {
 			// Call the function to test
 			result = supplyCount(kingdom[j], &post);
 			expect = pre.supplyCount[kingdom[j]];
-
+			
+			if (VERBOSE)
+				printf("supplyCount: %d, expected: %d\n", result, expect);
+				
 			// Assert that the function's return value matches the correct result
 			assert(result==expect);
 			// Assert that the gameState is identical to the ideal.
